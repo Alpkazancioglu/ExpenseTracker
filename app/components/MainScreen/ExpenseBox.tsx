@@ -1,4 +1,5 @@
 import { Text, View, StyleSheet, Pressable } from "react-native";
+import { useEffect } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Feather from "@expo/vector-icons/Feather";
 import Fontisto from "@expo/vector-icons/Fontisto";
@@ -6,7 +7,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Octicons from "@expo/vector-icons/Octicons";
 import { Colors } from "@/app/constants/Colors";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useContext, useState } from "react";
@@ -69,11 +70,19 @@ const ExpenseBox = ({ category, name, amount, isExpense, date, style, id }: Expe
   const logo = categoryLogos.find((item) => item.category === category)?.logo;
   const [deleteState, setDeleteState] = useState(false);
   const expenseDatasCtx = useContext(ExpenseDataContext);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    isFocused && setDeleteState(false);
+  }, [isFocused]);
 
   function DeleteView() {
     return (
       <View style={[styles.root, { justifyContent: "center", marginBottom: 10 }]}>
-        <Pressable style={{ flex: 1,justifyContent: 'center',alignItems: 'center', }} onPress={onPressHandler}>
+        <Pressable
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          onPress={onPressHandler}
+        >
           <Text style={{ color: "white", fontSize: 24 }}>Delete ?</Text>
         </Pressable>
       </View>

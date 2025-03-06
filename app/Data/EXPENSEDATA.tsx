@@ -18,6 +18,7 @@ interface CategoryData {
 
 interface ExpenseContextType {
   expenseDatas: ExpenseData[];
+  filterDate: string;
   addExpense: (data: ExpenseData) => void;
   getIncome: (category?: string) => number;
   getOutcome: (category?: string) => number;
@@ -26,6 +27,7 @@ interface ExpenseContextType {
 }
 
 export const ExpenseDataContext = createContext<ExpenseContextType>({
+  filterDate: "",
   expenseDatas: [],
   addExpense: () => {},
   getIncome: () => 0,
@@ -62,6 +64,8 @@ export default function ExpenseDataContextProvider({ children }: { children: Rea
       id: "3",
     },
   ]);
+
+  let filterDate = "";
 
   function addExpense(data: ExpenseData) {
     data.id = nanoid();
@@ -141,6 +145,7 @@ export default function ExpenseDataContextProvider({ children }: { children: Rea
 
   const value = {
     expenseDatas: expenseDatas,
+    filterDate: filterDate,
     addExpense: addExpense,
     getIncome: getIncome,
     getOutcome: getOutcome,

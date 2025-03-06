@@ -71,6 +71,11 @@ function ExpenseListScreen({}: ExpenseListScreenProps) {
   const [, forceRender] = useState(0);
   const expenseDatasCtx = useContext(ExpenseDataContext);
 
+  function handleSetFilter(date: string) {
+    setFilter(date);
+    expenseDatasCtx.filterDate = date;
+  }
+
   useEffect(() => {
     console.log(expenseDatasCtx.expenseDatas);
     forceRender((prev) => prev + 1);
@@ -124,17 +129,17 @@ function ExpenseListScreen({}: ExpenseListScreenProps) {
       case 0: //GUN ICIN
         setDateWithFormat(selectedFullDate);
         //filter = selectedFullDate;
-        setFilter(selectedFullDate);
+        handleSetFilter(selectedFullDate);
         break;
       case 1: // AY ICIN
         setDateWithFormat(months[parseInt(formattedDate.month) - 1] + ` ${formattedDate.year}`);
         //filter = `00-${formattedDate.month}-${formattedDate.year}`;
-        setFilter(`00-${formattedDate.month}-${formattedDate.year}`);
+        handleSetFilter(`00-${formattedDate.month}-${formattedDate.year}`);
         break;
       case 2: // YIL ICIN
         setDateWithFormat(formattedDate.year);
         //filter = `00-00-${formattedDate.year}`;
-        setFilter(`00-00-${formattedDate.year}`);
+        handleSetFilter(`00-00-${formattedDate.year}`);
         break;
       default:
         break;
@@ -156,17 +161,17 @@ function ExpenseListScreen({}: ExpenseListScreenProps) {
       const formattedDate = `${day}-${month}-${year}`;
       setDateWithFormat((prev) => formattedDate);
       //filter = formattedDate;
-      setFilter(formattedDate);
+      handleSetFilter(formattedDate);
     } else if (selectedType === "Ay") {
       const formattedDate = `00-${month}-${year}`;
       //filter = formattedDate;
-      setFilter(formattedDate);
+      handleSetFilter(formattedDate);
 
       setDateWithFormat(months[parseInt(month) - 1] + ` ${year}`);
     } else {
       const formattedDate = `00-00-${year}`;
       //filter = formattedDate;
-      setFilter(formattedDate);
+      handleSetFilter(formattedDate);
       setDateWithFormat(year.toString());
     }
 

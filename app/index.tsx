@@ -3,6 +3,7 @@ import { Colors } from "./constants/Colors";
 import MainScreen from "./screens/MainScreen";
 import IncomePieScreen from "./screens/IncomePieScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { DarkTheme } from "@react-navigation/native";
 import ExpenseDataContextProvider from "./Data/EXPENSEDATA";
 import OutcomePieScreen from "./screens/OutcomePieScreen";
 import ExpenseListScreen from "./screens/ExpenseListScreen";
@@ -19,12 +20,14 @@ const Tab = createBottomTabNavigator();
 
 const MainStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false, animation: "none" }}>
-      <Stack.Screen name="MainScreen" component={MainScreen} />
-      <Stack.Screen name="ExpenseList" component={ExpenseListScreen} />
-      <Stack.Screen name="IncomePie" component={IncomePieScreen} />
-      <Stack.Screen name="OutcomePie" component={OutcomePieScreen} />
-    </Stack.Navigator>
+    <View style={{flex:1,backgroundColor:Colors.black}}>
+      <Stack.Navigator screenOptions={{ headerShown: false, animation: "none" }}>
+        <Stack.Screen name="MainScreen" component={MainScreen} />
+        <Stack.Screen name="ExpenseList" component={ExpenseListScreen} />
+        <Stack.Screen name="IncomePie" component={IncomePieScreen} />
+        <Stack.Screen name="OutcomePie" component={OutcomePieScreen} />
+      </Stack.Navigator>
+    </View>
   );
 };
 

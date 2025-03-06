@@ -5,13 +5,14 @@ import ExpenseList from "../components/MainScreen/ExpenseList";
 import AddExpenseMoral from "../components/MainScreen/AddExpenseMoral";
 import AddExpenseButton from "../components/MainScreen/AddExpenseButton";
 import { useState, useContext } from "react";
-import { ExpenseDataContext } from "../Data/EXPENSEDATA";
+import { ExpenseDataContext, filterDataWithDate } from "../Data/EXPENSEDATA";
 
 interface MainScreenProps {}
 
 const MainScreen = ({}: MainScreenProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const expenseDataCtx = useContext(ExpenseDataContext);
+  const [thisMonthData] = useState(filterDataWithDate(expenseDataCtx.expenseDatas, "00-03-2025"));
 
   return (
     <>
