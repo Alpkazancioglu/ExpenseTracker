@@ -40,26 +40,26 @@ export default function ExpenseDataContextProvider({ children }: { children: Rea
   const [expenseDatas, setExpenseDatas] = useState<ExpenseData[]>([
     {
       category: "Yemek-İçecek",
-      amount: 100,
+      amount: 300,
       isExpense: true,
-      date: "01-02-2024",
+      date: "24-03-2025",
       name: "Restoran",
       id: "1",
     },
     {
       category: "Yatırım",
-      amount: 200,
+      amount: 2000,
       isExpense: false,
-      date: "24-02-2025",
+      date: "03-03-2025",
       name: "Altın Yatırımı",
       id: "2",
     },
 
     {
-      category: "Yemek-İçecek",
-      amount: 500,
-      isExpense: false,
-      date: "02-03-2025",
+      category: "Kira-Aidat",
+      amount: 10000,
+      isExpense: true,
+      date: "02-02-2025",
       name: "Restoran",
       id: "3",
     },
@@ -196,4 +196,38 @@ export function filterDataWithDate(data: ExpenseData[], date: string): ExpenseDa
   }
 
   return data.filter((expense) => checkCondition(expense.date));
+}
+export function getIncome(data: ExpenseData[], category?: string) {
+  let incomes = data.filter((expense) => !expense.isExpense);
+
+  if (category !== undefined) {
+    incomes = incomes.filter(
+      (expense) => expense.category.toLowerCase() === category.toLowerCase()
+    );
+  }
+
+  let amount = 0;
+
+  for (let index = 0; index < incomes.length; index++) {
+    amount += incomes[index].amount;
+  }
+
+  return amount;
+}
+export function getOutcome(data: ExpenseData[], category?: string) {
+  let outcomes = data.filter((expense) => expense.isExpense);
+  let amount = 0;
+
+  if (category !== undefined) {
+    outcomes = outcomes.filter(
+      (expense) => expense.category.toLowerCase() === category.toLowerCase()
+    );
+  }
+
+  for (let index = 0; index < outcomes.length; index++) {
+    amount += outcomes[index].amount;
+    console.log(amount);
+  }
+
+  return amount;
 }

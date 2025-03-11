@@ -12,7 +12,7 @@ interface MainScreenProps {}
 const MainScreen = ({}: MainScreenProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const expenseDataCtx = useContext(ExpenseDataContext);
-  const [thisMonthData] = useState(filterDataWithDate(expenseDataCtx.expenseDatas, "00-03-2025"));
+  
 
   return (
     <>

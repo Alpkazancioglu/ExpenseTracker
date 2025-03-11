@@ -3,7 +3,7 @@ import { Colors } from "./constants/Colors";
 import MainScreen from "./screens/MainScreen";
 import IncomePieScreen from "./screens/IncomePieScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { DarkTheme } from "@react-navigation/native";
+
 import ExpenseDataContextProvider from "./Data/EXPENSEDATA";
 import OutcomePieScreen from "./screens/OutcomePieScreen";
 import ExpenseListScreen from "./screens/ExpenseListScreen";
@@ -14,13 +14,14 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 import "react-native-reanimated";
 import "react-native-gesture-handler";
+import InvestmentDataContextProvider from "./Data/INVESTMENTDATA";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MainStack = () => {
   return (
-    <View style={{flex:1,backgroundColor:Colors.black}}>
+    <View style={{ flex: 1, backgroundColor: Colors.black }}>
       <Stack.Navigator screenOptions={{ headerShown: false, animation: "none" }}>
         <Stack.Screen name="MainScreen" component={MainScreen} />
         <Stack.Screen name="ExpenseList" component={ExpenseListScreen} />
@@ -31,11 +32,13 @@ const MainStack = () => {
   );
 };
 
-const investmentStack = () => {
+const InvestmentStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false, animation: "none" }}>
-      <Stack.Screen name="InvensmentScreen" component={InvensmentScreen} />
-    </Stack.Navigator>
+    <InvestmentDataContextProvider>
+      <Stack.Navigator screenOptions={{ headerShown: false, animation: "none" }}>
+        <Stack.Screen name="InvensmentScreen" component={InvensmentScreen} />
+      </Stack.Navigator>
+    </InvestmentDataContextProvider>
   );
 };
 
@@ -46,9 +49,10 @@ export default function index() {
         <View style={styles.rootContainer}>
           <Tab.Navigator
             screenOptions={{ headerShown: false, tabBarStyle: { backgroundColor: Colors.black } }}
+            initialRouteName="Invesment" //! burayi silmeyi unutma
           >
             <Tab.Screen
-              name="Expens"
+              name="Expense"
               component={MainStack}
               options={{
                 tabBarIcon: () => <FontAwesome name="credit-card" size={24} color={Colors.white} />,
@@ -57,7 +61,7 @@ export default function index() {
             />
             <Tab.Screen
               name="Invesment"
-              component={investmentStack}
+              component={InvestmentStack}
               options={{
                 tabBarIcon: () => <FontAwesome5 name="piggy-bank" size={24} color={Colors.white} />,
                 tabBarLabel: () => null,

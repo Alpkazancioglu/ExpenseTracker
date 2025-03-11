@@ -29,7 +29,7 @@ const componentName = ({ amount, style }: componentNameProps) => {
   return (
     <View style={[styles.root, style]}>
       <View style={styles.container}>
-        <Text style={styles.text}>TOPLAM BAKIYE</Text>
+        <Text style={styles.text}>KALAN PARA</Text>
         <Text style={styles.amountText}>
           {operatorString} {moneyAmount} {tlLogo}
         </Text>

@@ -4,14 +4,11 @@ import { Text, View, StyleSheet, Modal, TextInput, StatusBar, Pressable } from "
 import { SelectList } from "react-native-dropdown-select-list";
 import { Alert } from "react-native";
 import { ExpenseDataContext, ExpenseData } from "@/app/Data/EXPENSEDATA";
+import BackButton from "./BackButton";
 
 interface AddExpenseMoralProps {
   isModalVisible: boolean;
   setIsModalVisible: (state: boolean) => void;
-}
-function formatToMoney(value: number) {
-  value = Math.abs(value);
-  return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
 }
 
 const AddExpenseMoral = ({ isModalVisible, setIsModalVisible }: AddExpenseMoralProps) => {
@@ -21,6 +18,13 @@ const AddExpenseMoral = ({ isModalVisible, setIsModalVisible }: AddExpenseMoralP
   const [selectedAmount, setSelectedAmount] = useState("");
 
   const expenseDatasCtx = useContext(ExpenseDataContext);
+
+  function handleExit() {
+    setIsModalVisible(false);
+    setSelectedAmount("");
+    setSelectedName("");
+    setSelectedTransaction("");
+  }
 
   function confirmButtonHandler() {
     const category = categoryData.find((item) => item.key === Number(selectedCategory))?.value;
@@ -85,18 +89,17 @@ const AddExpenseMoral = ({ isModalVisible, setIsModalVisible }: AddExpenseMoralP
   ];
 
   return (
-    <Modal
-      animationType="slide"
-      visible={isModalVisible}
-      onRequestClose={() => setIsModalVisible(false)}
-    >
+    <Modal animationType="slide" visible={isModalVisible} onRequestClose={handleExit}>
       <View style={styles.container}>
         <View style={styles.header}>
+          <View style={{ position: "absolute", top: 30, left: 20 }}>
+            <BackButton onPress={handleExit} />
+          </View>
           <Text style={styles.headerText}>Islem Sekmesi</Text>
         </View>
         <View style={styles.nameContainer}>
           <TextInput
-            placeholder="ISIM"
+            placeholder="Başlık"
             placeholderTextColor={Colors.greyForText}
             style={{ color: Colors.white }}
             onChangeText={setSelectedName}
@@ -109,7 +112,7 @@ const AddExpenseMoral = ({ isModalVisible, setIsModalVisible }: AddExpenseMoralP
           search={false}
           boxStyles={styles.categoryContainer}
           inputStyles={{ color: Colors.greyForText, paddingTop: 2 }}
-          placeholder="KATEGORI"
+          placeholder="Kategori"
           dropdownTextStyles={{ color: Colors.white }}
           dropdownItemStyles={{
             borderWidth: 1,
@@ -137,7 +140,7 @@ const AddExpenseMoral = ({ isModalVisible, setIsModalVisible }: AddExpenseMoralP
           search={false}
           boxStyles={styles.categoryContainer}
           inputStyles={{ color: Colors.greyForText, paddingTop: 2 }}
-          placeholder="Islem turu"
+          placeholder="İşlem türü"
           dropdownTextStyles={{ color: Colors.white }}
           dropdownItemStyles={{
             borderWidth: 1,
@@ -149,8 +152,8 @@ const AddExpenseMoral = ({ isModalVisible, setIsModalVisible }: AddExpenseMoralP
         />
 
         <Pressable onPress={confirmButtonHandler}>
-          <View style={{ borderWidth: 1, borderColor: "white" }}>
-            <Text style={{ color: "white", fontSize: 24 }}>TEST</Text>
+          <View style={{ borderWidth: 1, borderColor: "white", padding: 10, borderRadius: 10 }}>
+            <Text style={{ color: "white", fontSize: 24 }}>Ekle</Text>
           </View>
         </Pressable>
       </View>
@@ -173,6 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: Colors.greyLight,
     marginBottom: 20,
+    flexDirection: "row",
   },
   headerText: {
     color: Colors.greyForText,
