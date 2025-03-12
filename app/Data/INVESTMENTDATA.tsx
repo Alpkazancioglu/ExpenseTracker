@@ -10,6 +10,8 @@ export interface InvestmentData {
 
 interface InvestmentContextType {
   investments: InvestmentData[];
+  exchangeRates: { gold: number; dollar: number };
+  setExchangeRates: (type: "dollar" | "gold", value: number) => void;
   getTypeCountAndAmount: (type: "gold" | "dollar" | "tl") => { count: number; amount: number };
   addInvestment: (data: InvestmentData) => void;
   deleteInvestment: (id: string) => void;
@@ -18,6 +20,8 @@ interface InvestmentContextType {
 
 export const InvestmentDataContext = createContext<InvestmentContextType>({
   investments: [],
+  exchangeRates: { gold: 0, dollar: 0 },
+  setExchangeRates: () => {},
   getTypeCountAndAmount: () => ({ count: 0, amount: 0 }),
   addInvestment: () => {},
   deleteInvestment: () => {},
@@ -32,6 +36,19 @@ export default function InvestmentDataContextProvider({ children }: { children: 
     { date: "08-03-2025", id: "4", type: "tl", count: 1000 },
   ]);
 
+  const [exchangeRates, m_setExchangeRates] = useState({ gold: 0, dollar: 0 });
+
+  function setExchangeRates(type: "dollar" | "gold", value: number) {
+    let newRates = exchangeRates;
+    if (type === "dollar") {
+      newRates.dollar = value;
+    } else if (type === "gold") {
+      newRates.gold = value;
+    }
+
+    m_setExchangeRates((e) => newRates);
+  }
+
   function addInvestment(data: InvestmentData) {
     data.id = nanoid();
     setInvestment((i) => [...i, data]);
@@ -41,13 +58,15 @@ export default function InvestmentDataContextProvider({ children }: { children: 
     setInvestment(filteredArray);
   }
   function getTotalAmount() {
-    const exchangeRates = { gold: 3500, dollar: 35, tl: 1 };
-    return investments.reduce((total, data) => total + data.count * exchangeRates[data.type], 0);
+    const rates = { gold: exchangeRates.gold, dollar: exchangeRates.dollar, tl: 1 };
+    console.log(rates);
+
+    return investments.reduce((total, data) => total + data.count * rates[data.type], 0);
   }
 
   function getTypeCountAndAmount(type: "gold" | "dollar" | "tl") {
-    const goldExchange = 3500;
-    const dollarExchange = 35;
+    const goldExchange = exchangeRates.gold;
+    const dollarExchange = exchangeRates.dollar;
 
     const filteredArray = investments.filter((value) => value.type === type);
 
@@ -67,6 +86,8 @@ export default function InvestmentDataContextProvider({ children }: { children: 
 
   const value = {
     investments: investments,
+    exchangeRates: exchangeRates,
+    setExchangeRates: setExchangeRates,
     getTypeCountAndAmount: getTypeCountAndAmount,
     addInvestment: addInvestment,
     deleteInvestment: deleteInvestment,

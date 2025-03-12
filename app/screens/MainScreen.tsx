@@ -6,6 +6,7 @@ import AddExpenseMoral from "../components/MainScreen/AddExpenseMoral";
 import AddExpenseButton from "../components/MainScreen/AddExpenseButton";
 import { useState, useContext } from "react";
 import { ExpenseDataContext, filterDataWithDate } from "../Data/EXPENSEDATA";
+import Entypo from '@expo/vector-icons/Entypo';
 
 interface MainScreenProps {}
 

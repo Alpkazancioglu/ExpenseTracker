@@ -8,7 +8,6 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Octicons from "@expo/vector-icons/Octicons";
 import { Colors } from "@/app/constants/Colors";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useContext, useState } from "react";
 import { ExpenseDataContext } from "@/app/Data/EXPENSEDATA";
@@ -16,27 +15,27 @@ import { InvestmentData } from "@/app/Data/INVESTMENTDATA";
 
 const categoryLogos = [
   {
-    logo: <Ionicons name="fast-food-outline" size={40} color={Colors.white} />,
+    logo: <MaterialCommunityIcons name="gold" size={40} color="white" />,
     type: "gold",
   },
   {
-    logo: <MaterialCommunityIcons name="gold" size={40} color={Colors.white} />,
+    logo: <Feather name="dollar-sign" size={40} color="white" />,
     type: "dollar",
   },
   {
-    logo: <Feather name="shopping-cart" size={40} color={Colors.white} />,
+    logo: <FontAwesome name="turkish-lira" size={40} color="white" />,
     type: "tl",
   },
 ];
 
+const localization = { gold: "Altin", dollar: "Dolar", tl: "Turk Lirasi" };
 const exchangeRates = { gold: 3500, dollar: 35, tl: 1 };
 
-const InvesmentBox = ({ type, count, date, id }: InvestmentData) => {
+const InvesmentBox = ({ type, count, date }: InvestmentData) => {
   const AmountText = "+" + (count * exchangeRates[type]).toString() + "TL";
 
   const logo = categoryLogos.find((item) => item.type === type)?.logo;
   const [deleteState, setDeleteState] = useState(false);
-  const expenseDatasCtx = useContext(ExpenseDataContext);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -72,7 +71,7 @@ const InvesmentBox = ({ type, count, date, id }: InvestmentData) => {
       <Pressable style={styles.root} onPress={onPressHandler} onLongPress={onLongPressHandler}>
         <View style={styles.iconContainer}>{logo}</View>
         <View style={styles.textContainer}>
-          <Text style={styles.nameText}>{type}</Text>
+          <Text style={styles.nameText}>{localization[type]}</Text>
           <Text style={styles.categoryText}>{count} Adet</Text>
         </View>
         <View style={styles.amountAndDateContainer}>
