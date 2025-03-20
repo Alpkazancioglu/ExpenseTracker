@@ -4,6 +4,7 @@ import { nanoid } from "nanoid/non-secure";
 export interface InvestmentData {
   type: "gold" | "dollar" | "tl";
   count: number;
+  buyedAmount: number;
   id: string;
   date: string;
 }
@@ -20,7 +21,7 @@ interface InvestmentContextType {
 
 export const InvestmentDataContext = createContext<InvestmentContextType>({
   investments: [],
-  exchangeRates: { gold: 0, dollar: 0 },
+  exchangeRates: { gold: 3400, dollar: 36 },
   setExchangeRates: () => {},
   getTypeCountAndAmount: () => ({ count: 0, amount: 0 }),
   addInvestment: () => {},
@@ -30,13 +31,13 @@ export const InvestmentDataContext = createContext<InvestmentContextType>({
 
 export default function InvestmentDataContextProvider({ children }: { children: React.ReactNode }) {
   const [investments, setInvestment] = useState<InvestmentData[]>([
-    { date: "08-03-2025", id: "1", type: "gold", count: 1 },
-    { date: "08-03-2025", id: "2", type: "dollar", count: 3 },
-    { date: "08-03-2025", id: "3", type: "gold", count: 2 },
-    { date: "08-03-2025", id: "4", type: "tl", count: 1000 },
+    { date: "08-03-2025", id: "1", type: "gold", count: 1, buyedAmount: 3000 },
+    { date: "08-03-2025", id: "2", type: "dollar", count: 3, buyedAmount: 90 },
+    { date: "08-03-2025", id: "3", type: "gold", count: 2, buyedAmount: 6000 },
+    { date: "08-03-2025", id: "4", type: "tl", count: 1000, buyedAmount: 1000 },
   ]);
 
-  const [exchangeRates, m_setExchangeRates] = useState({ gold: 0, dollar: 0 });
+  const [exchangeRates, m_setExchangeRates] = useState({ gold: 3400, dollar: 36 });
 
   function setExchangeRates(type: "dollar" | "gold", value: number) {
     let newRates = exchangeRates;
@@ -51,7 +52,7 @@ export default function InvestmentDataContextProvider({ children }: { children: 
 
   function addInvestment(data: InvestmentData) {
     data.id = nanoid();
-    setInvestment((i) => [...i, data]);
+    setInvestment((i) => [data,...i]);
   }
   function deleteInvestment(id: string) {
     const filteredArray = investments.filter((data) => data.id !== id);
@@ -67,6 +68,7 @@ export default function InvestmentDataContextProvider({ children }: { children: 
   function getTypeCountAndAmount(type: "gold" | "dollar" | "tl") {
     const goldExchange = exchangeRates.gold;
     const dollarExchange = exchangeRates.dollar;
+    console.log("is rendered");
 
     const filteredArray = investments.filter((value) => value.type === type);
 

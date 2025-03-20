@@ -11,23 +11,24 @@ import { InvestmentDataContext } from "@/app/Data/INVESTMENTDATA";
 interface TitleProps {}
 
 function Title(props: TitleProps) {
-  const [titleSwitch, setTitleSwitch] = useState(true); //todo false yapmayi unutma
-
-  function handleSwitch() {
-    setTitleSwitch((t) => !t);
-  }
+  const [titleSwitch, setTitleSwitch] = useState(false);
 
   const investmentDataCtx = useContext(InvestmentDataContext);
   const totalAmount = useMemo(() => investmentDataCtx.getTotalAmount(), [investmentDataCtx]);
   const totalGold = useMemo(
     () => investmentDataCtx.getTypeCountAndAmount("gold"),
-    [investmentDataCtx]
+    [investmentDataCtx.investments, investmentDataCtx.exchangeRates.gold]
   );
+
   const totalDollar = useMemo(
     () => investmentDataCtx.getTypeCountAndAmount("dollar"),
-    [investmentDataCtx]
+    [investmentDataCtx.investments, investmentDataCtx.exchangeRates.dollar]
   );
-  const totalTl = useMemo(() => investmentDataCtx.getTypeCountAndAmount("tl"), [investmentDataCtx]);
+  
+  const totalTl = useMemo(
+    () => investmentDataCtx.getTypeCountAndAmount("tl"),
+    [investmentDataCtx.investments]
+  );
 
   return (
     <View style={styles.container}>

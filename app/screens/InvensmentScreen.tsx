@@ -8,17 +8,22 @@ import RenderInvestments from "../components/InvesmentScreen/RenderInvestments";
 import Entypo from "@expo/vector-icons/Entypo";
 import SelectExchangeRate from "../components/InvesmentScreen/SelectExchangeRateButton";
 import ExchangeRateModal from "../components/InvesmentScreen/ExchangeRateModal";
+import AddInvestmentButton from "../components/InvesmentScreen/AddInvestmentButton";
+import AddInvestmentModal from "../components/InvesmentScreen/AddInvenstmentModal";
 
 function InvensmentScreen() {
   const investmentDataCtx = useContext(InvestmentDataContext);
   const [isChangeExchangeVisible, setIsChangeExchangeVisible] = useState(false);
+  const [isAddExpenseVisible, setIsAddExpenseVisible] = useState(false);
 
   return (
     <>
       <View style={styles.container}>
         <SelectExchangeRate setIsModalVisible={setIsChangeExchangeVisible} />
-        <Text style={{ color: "white" }}>{investmentDataCtx.exchangeRates.dollar}</Text>
         <Title />
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>En Son Islemler</Text>
+        </View>
         <View
           style={{
             flex: 0.85,
@@ -27,13 +32,17 @@ function InvensmentScreen() {
           }}
         >
           <RenderInvestments data={investmentDataCtx.investments} />
+          <AddInvestmentButton setIsModalVisible={setIsAddExpenseVisible} />
         </View>
+        <ExchangeRateModal
+          isModalVisible={isChangeExchangeVisible}
+          setIsModalVisible={setIsChangeExchangeVisible}
+        />
+        <AddInvestmentModal
+          isModalVisible={isAddExpenseVisible}
+          setIsModalVisible={setIsAddExpenseVisible}
+        />
       </View>
-
-      <ExchangeRateModal
-        isModalVisible={isChangeExchangeVisible}
-        setIsModalVisible={setIsChangeExchangeVisible}
-      />
     </>
   );
 }
@@ -49,5 +58,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.white,
+  },
+  textContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

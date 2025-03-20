@@ -6,46 +6,66 @@ import { Alert } from "react-native";
 
 import BackButton from "../MainScreen/BackButton";
 import { InvestmentData, InvestmentDataContext } from "@/app/Data/INVESTMENTDATA";
+import { nanoid } from "nanoid/non-secure";
+import getTodayDate from "../../utils";
 
 interface AddInvestmentModalProps {
   isModalVisible: boolean;
   setIsModalVisible: (state: boolean) => void;
 }
 
+const categoryData = [
+  { key: 1, value: "Altin" },
+  { key: 2, value: "Dolar" },
+  { key: 3, value: "Turk Lirasi" },
+];
+
 const AddInvestmentModal = ({ isModalVisible, setIsModalVisible }: AddInvestmentModalProps) => {
   const investmentDataCtx = useContext(InvestmentDataContext);
 
-  const [goldPrice, setGoldPrice] = useState(investmentDataCtx.exchangeRates.gold);
-  const [dollarPrice, setDollarPrice] = useState(investmentDataCtx.exchangeRates.dollar);
+  const [count, setCount] = useState(0);
+  const [amount, setAmount] = useState(0);
+  const [selectedType, setSelectedType] = useState("");
+
+  function handleSetCount(value: string) {
+    setCount(Number(value));
+  }
+  function handleSetAmount(value: string) {
+    setAmount(Number(value));
+  }
 
   function handleExit() {
     setIsModalVisible(false);
-    setGoldPrice(investmentDataCtx.exchangeRates.gold);
-    setDollarPrice(investmentDataCtx.exchangeRates.dollar);
-  }
-
-  function handleDollarInput(text: string) {
-    setDollarPrice(Number(text));
-  }
-  function handleGoldInput(text: string) {
-    setGoldPrice(Number(text));
+    setCount(0);
+    setAmount(0);
   }
 
   function confirmButtonHandler() {
-    if (!goldPrice || !dollarPrice) {
-      Alert.alert("Hata", "Lütfen tüm alanları doldurun.");
+    if (count === 0 || amount === 0 || selectedType === "") {
+      Alert.alert("Hata", "Lütfen tüm alanları doldurun ve adet ile miktari 0 yapmayin");
+      setCount(0);
+      setAmount(0);
       return;
     }
 
-    if (goldPrice <= 0 || isNaN(goldPrice) || dollarPrice <= 0 || isNaN(dollarPrice)) {
+    if (count <= 0 || isNaN(count) || amount <= 0 || isNaN(amount)) {
       Alert.alert("Hata", "Lütfen pozitif bir para degeri giriniz");
-      setGoldPrice(investmentDataCtx.exchangeRates.gold);
-      setDollarPrice(investmentDataCtx.exchangeRates.dollar);
+      setCount(0);
+      setAmount(0);
       return;
     }
 
-    investmentDataCtx.setExchangeRates("dollar", dollarPrice);
-    investmentDataCtx.setExchangeRates("gold", goldPrice);
+    const type = selectedType === "Altin" ? "gold" : selectedType === "Dolar" ? "dollar" : "tl";
+
+    const data: InvestmentData = {
+      buyedAmount: amount,
+      count: count,
+      id: nanoid(),
+      type: type,
+      date: getTodayDate("day"),
+    };
+
+    investmentDataCtx.addInvestment(data);
     setIsModalVisible(false);
   }
 
@@ -59,24 +79,38 @@ const AddInvestmentModal = ({ isModalVisible, setIsModalVisible }: AddInvestment
           <Text style={styles.headerText}>Islem Sekmesi</Text>
         </View>
 
+        <SelectList
+          setSelected={(val: string) => setSelectedType(val)}
+          data={categoryData}
+          search={false}
+          boxStyles={styles.categoryContainer}
+          inputStyles={{ color: Colors.greyForText, paddingTop: 2 }}
+          placeholder="Kategori"
+          dropdownTextStyles={{ color: Colors.white }}
+          dropdownItemStyles={{
+            borderWidth: 1,
+            borderRadius: 10,
+            marginBottom: 10,
+            borderColor: "white",
+          }}
+          dropdownStyles={{ marginBottom: 10, backgroundColor: Colors.greyLight }}
+        />
         <View style={styles.nameContainer}>
           <TextInput
-            placeholder="Altin"
+            placeholder="Adet"
             placeholderTextColor={Colors.greyForText}
             style={{ color: Colors.white }}
             inputMode="numeric"
-            onChangeText={handleGoldInput}
-            value={goldPrice.toString()}
+            onChangeText={handleSetCount}
           />
         </View>
         <View style={styles.nameContainer}>
           <TextInput
-            placeholder="Dolar"
+            placeholder="Miktar"
             placeholderTextColor={Colors.greyForText}
             style={{ color: Colors.white }}
             inputMode="numeric"
-            onChangeText={handleDollarInput}
-            value={dollarPrice.toString()}
+            onChangeText={handleSetAmount}
           />
         </View>
 

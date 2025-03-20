@@ -19,7 +19,7 @@ const DetailTitle = ({ gold, dollar, tl }: DetailTitleProps) => {
         <Text style={styles.title}>Adet</Text>
         <Text style={styles.text}>{tl.count}</Text>
         <Text style={styles.text}>{gold.count} gr</Text>
-        <Text style={styles.text}>{dollar.count}</Text>
+        <Text style={styles.text}>{dollar.count}$</Text>
       </View>
       <View style={styles.box}>
         <Text style={styles.title}>Toplam</Text>

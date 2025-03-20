@@ -10,8 +10,8 @@ import { Colors } from "@/app/constants/Colors";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useContext, useState } from "react";
-import { ExpenseDataContext } from "@/app/Data/EXPENSEDATA";
-import { InvestmentData } from "@/app/Data/INVESTMENTDATA";
+
+import { InvestmentData, InvestmentDataContext } from "@/app/Data/INVESTMENTDATA";
 
 const categoryLogos = [
   {
@@ -31,9 +31,9 @@ const categoryLogos = [
 const localization = { gold: "Altin", dollar: "Dolar", tl: "Turk Lirasi" };
 const exchangeRates = { gold: 3500, dollar: 35, tl: 1 };
 
-const InvesmentBox = ({ type, count, date }: InvestmentData) => {
-  const AmountText = "+" + (count * exchangeRates[type]).toString() + "TL";
-
+const InvesmentBox = ({ type, count, date, buyedAmount, id }: InvestmentData) => {
+  const AmountText = buyedAmount.toString() + "TL";
+  const investmentDataCtx = useContext(InvestmentDataContext);
   const logo = categoryLogos.find((item) => item.type === type)?.logo;
   const [deleteState, setDeleteState] = useState(false);
   const isFocused = useIsFocused();
@@ -57,7 +57,7 @@ const InvesmentBox = ({ type, count, date }: InvestmentData) => {
 
   function onPressHandler() {
     if (deleteState) {
-      //!buraya silme fonksiyonu ekle invesment icin
+      investmentDataCtx.deleteInvestment(id);
       setDeleteState(false);
     }
   }
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     color: Colors.greyForText,
   },
   amountTextPlus: {
-    color: Colors.green,
+    color: Colors.white,
     fontSize: 18,
   },
   amountTextMinus: {

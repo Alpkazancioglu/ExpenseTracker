@@ -22,7 +22,13 @@ const RenderInvestments = ({ itemCount, data }: RenderInvestmentsProps) => {
         data={itemCount ? data.slice(0, itemCount) : data}
         renderItem={({ item }) => (
           <View style={{ paddingBottom: 20 }}>
-            <InvesmentBox count={item.count} date={item.date} type={item.type} id={item.id!} />
+            <InvesmentBox
+              count={item.count}
+              date={item.date}
+              type={item.type}
+              id={item.id}
+              buyedAmount={item.buyedAmount}
+            />
           </View>
         )}
         keyExtractor={(item) => (item.id ? item.id : "0")} // item.id her zaman olucak o yuzden asla 0 olmayacak
