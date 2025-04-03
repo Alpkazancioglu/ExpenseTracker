@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 interface AddExpenseButtonProps {

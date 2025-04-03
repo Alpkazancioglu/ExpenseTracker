@@ -1,21 +1,17 @@
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import ExpenseBox from "./ExpenseBox";
-import { useContext, useEffect, useMemo } from "react";
-import { ExpenseDataContext, ExpenseData } from "@/app/Data/EXPENSEDATA";
+
+import { ExpenseData } from "@/app/Data/EXPENSEDATA";
 
 interface ExpenseListProps {
   data: ExpenseData[];
   itemCount?: number;
 }
 
-function parseDate(date: string) {
-  const [day, month, year] = date.split("-");
-  return { day, month, year };
-}
+
 
 const ExpenseList = ({ itemCount, data }: ExpenseListProps) => {
-  const expenseDatasCtx = useContext(ExpenseDataContext);
-
+  
   return (
     <View style={styles.container}>
       <FlatList

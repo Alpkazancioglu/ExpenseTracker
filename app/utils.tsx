@@ -19,3 +19,7 @@ export default function getTodayDate(desiredFormat: "day" | "month" | "year") {
   }
 }
 
+export function formatToMoney(value: number) {
+  value = Math.abs(value);
+  return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+}

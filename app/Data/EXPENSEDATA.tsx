@@ -24,6 +24,7 @@ interface ExpenseContextType {
   getOutcome: (category?: string) => number;
   getCategorys: () => CategoryData[];
   deleteExpense: (dataId: string) => void;
+  loadExpensesFromFile: (data: ExpenseData[]) => void;
 }
 
 export const ExpenseDataContext = createContext<ExpenseContextType>({
@@ -34,6 +35,7 @@ export const ExpenseDataContext = createContext<ExpenseContextType>({
   getOutcome: () => 0,
   getCategorys: () => [],
   deleteExpense: () => {},
+  loadExpensesFromFile: () => {},
 });
 
 export default function ExpenseDataContextProvider({ children }: { children: React.ReactNode }) {
@@ -111,7 +113,9 @@ export default function ExpenseDataContextProvider({ children }: { children: Rea
 
     return amount;
   }
-
+  function loadExpensesFromFile(data: ExpenseData[]) {
+    setExpenseDatas(data);
+  }
   function getCategorys(): CategoryData[] {
     //let categorys: CategoryData[] = [{ category: "diger", income: 0, outcome: 0 }];
     let categorys: CategoryData[] = [];
@@ -151,6 +155,7 @@ export default function ExpenseDataContextProvider({ children }: { children: Rea
     getOutcome: getOutcome,
     getCategorys: getCategorys,
     deleteExpense: deleteExpense,
+    loadExpensesFromFile: loadExpensesFromFile,
   };
 
   return <ExpenseDataContext.Provider value={value}>{children}</ExpenseDataContext.Provider>;

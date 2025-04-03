@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import IncomeAmount from "./IncomeAmount";
 import OutcomeAmount from "./OutcomeAmount";
 import MoneyAmount from "./MoneyAmount";

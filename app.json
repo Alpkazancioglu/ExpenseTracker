@@ -1,11 +1,10 @@
 {
   "expo": {
-    "name": "KilluaApp",
-    "slug": "KilluaApp",
+    "name": "Expense Tracker",
+    "slug": "ExpenseTracker",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    
+    "icon": "./assets/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,9 +13,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.killuadeska.ExpenseTracker"
     },
     "web": {
       "bundler": "metro",
@@ -28,7 +28,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/splash.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
@@ -37,6 +37,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "571224e8-4223-4c9f-b7c1-a4228702bf87"
+      }
     }
   }
 }

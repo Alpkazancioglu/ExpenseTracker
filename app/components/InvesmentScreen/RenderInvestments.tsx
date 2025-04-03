@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import {View, StyleSheet, FlatList } from "react-native";
 
 import { useContext, useEffect, useMemo } from "react";
 import { ExpenseDataContext, ExpenseData } from "@/app/Data/EXPENSEDATA";
@@ -28,6 +28,7 @@ const RenderInvestments = ({ itemCount, data }: RenderInvestmentsProps) => {
               type={item.type}
               id={item.id}
               buyedAmount={item.buyedAmount}
+              transcation={item.transcation}
             />
           </View>
         )}

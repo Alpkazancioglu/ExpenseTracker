@@ -13,7 +13,10 @@ interface AddInvestmentModalProps {
   isModalVisible: boolean;
   setIsModalVisible: (state: boolean) => void;
 }
-
+const transactionData = [
+  { key: 1, value: "Alım" },
+  { key: 2, value: "Satım" },
+];
 const categoryData = [
   { key: 1, value: "Altin" },
   { key: 2, value: "Dolar" },
@@ -26,6 +29,7 @@ const AddInvestmentModal = ({ isModalVisible, setIsModalVisible }: AddInvestment
   const [count, setCount] = useState(0);
   const [amount, setAmount] = useState(0);
   const [selectedType, setSelectedType] = useState("");
+  const [selectedTranscation, setSelectedTransaction] = useState("");
 
   function handleSetCount(value: string) {
     setCount(Number(value));
@@ -41,7 +45,7 @@ const AddInvestmentModal = ({ isModalVisible, setIsModalVisible }: AddInvestment
   }
 
   function confirmButtonHandler() {
-    if (count === 0 || amount === 0 || selectedType === "") {
+    if (count === 0 || amount === 0 || selectedType === "" || selectedTranscation === "") {
       Alert.alert("Hata", "Lütfen tüm alanları doldurun ve adet ile miktari 0 yapmayin");
       setCount(0);
       setAmount(0);
@@ -55,7 +59,25 @@ const AddInvestmentModal = ({ isModalVisible, setIsModalVisible }: AddInvestment
       return;
     }
 
-    const type = selectedType === "Altin" ? "gold" : selectedType === "Dolar" ? "dollar" : "tl";
+    let tempType = categoryData.find((item) => item.key === Number(selectedType))?.value;
+    let type: "dollar" | "gold" | "tl";
+    if (tempType === "Altin") {
+      type = "gold";
+    } else if (tempType === "Dolar") {
+      type = "dollar";
+    } else {
+      type = "tl";
+    }
+
+    let tempTransaction = transactionData.find(
+      (item) => item.key === Number(selectedTranscation)
+    )?.value;
+    let transaction: "purchase" | "sale";
+    if (tempTransaction === "Satım") {
+      transaction = "sale";
+    } else {
+      transaction = "purchase";
+    }
 
     const data: InvestmentData = {
       buyedAmount: amount,
@@ -63,8 +85,9 @@ const AddInvestmentModal = ({ isModalVisible, setIsModalVisible }: AddInvestment
       id: nanoid(),
       type: type,
       date: getTodayDate("day"),
+      transcation: transaction,
     };
-
+    console.log(data);
     investmentDataCtx.addInvestment(data);
     setIsModalVisible(false);
   }
@@ -106,14 +129,29 @@ const AddInvestmentModal = ({ isModalVisible, setIsModalVisible }: AddInvestment
         </View>
         <View style={styles.nameContainer}>
           <TextInput
-            placeholder="Miktar"
+            placeholder="Tutar"
             placeholderTextColor={Colors.greyForText}
             style={{ color: Colors.white }}
             inputMode="numeric"
             onChangeText={handleSetAmount}
           />
         </View>
-
+        <SelectList
+          setSelected={(val: string) => setSelectedTransaction(val)}
+          data={transactionData}
+          search={false}
+          boxStyles={styles.categoryContainer}
+          inputStyles={{ color: Colors.greyForText, paddingTop: 2 }}
+          placeholder="İşlem"
+          dropdownTextStyles={{ color: Colors.white }}
+          dropdownItemStyles={{
+            borderWidth: 1,
+            borderRadius: 10,
+            marginBottom: 10,
+            borderColor: "white",
+          }}
+          dropdownStyles={{ marginBottom: 10, backgroundColor: Colors.greyLight }}
+        />
         <Pressable onPress={confirmButtonHandler}>
           <View style={{ borderWidth: 1, borderColor: "white", padding: 10, borderRadius: 10 }}>
             <Text style={{ color: "white", fontSize: 24 }}>Ekle</Text>

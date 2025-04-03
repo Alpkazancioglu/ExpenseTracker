@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Switch } from "react-native";
+import { View, StyleSheet, Switch } from "react-native";
 import { useContext, useMemo, useState } from "react";
 
 import { MotiView } from "moti";

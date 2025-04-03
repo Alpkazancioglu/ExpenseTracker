@@ -49,7 +49,6 @@ export default function index() {
         <View style={styles.rootContainer}>
           <Tab.Navigator
             screenOptions={{ headerShown: false, tabBarStyle: { backgroundColor: Colors.black } }}
-            initialRouteName="Invesment" //! burayi silmeyi unutma
           >
             <Tab.Screen
               name="Expense"

@@ -38,7 +38,7 @@ const AddExpenseMoral = ({ isModalVisible, setIsModalVisible }: AddExpenseMoralP
     }
 
     if (Number(selectedAmount) <= 0 || isNaN(Number(selectedAmount))) {
-      Alert.alert("Hata", "Lütfen pozitif bir para degeri giriniz");
+      Alert.alert("Hata", "Lütfen pozitif ve gecerli bir para degeri giriniz");
       setSelectedAmount("");
       return;
     }
@@ -48,7 +48,7 @@ const AddExpenseMoral = ({ isModalVisible, setIsModalVisible }: AddExpenseMoralP
     console.log(selectedAmount);
     console.log(transaction);
 
-    const isExpense = transaction === "Gider";
+    const isExpense = (transaction === "Gider");
 
     const currentDate = new Date();
     const day = String(currentDate.getDate()).padStart(2, "0");
@@ -102,7 +102,7 @@ const AddExpenseMoral = ({ isModalVisible, setIsModalVisible }: AddExpenseMoralP
             placeholder="Başlık"
             placeholderTextColor={Colors.greyForText}
             style={{ color: Colors.white }}
-            onChangeText={setSelectedName}
+            onChangeText={setSelectedName} //! burayi moneyformat ile dene
           />
         </View>
 

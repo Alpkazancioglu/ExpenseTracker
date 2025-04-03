@@ -1,6 +1,5 @@
-import { Text, View, StyleSheet, Pressable } from "react-native";
-import { useContext } from "react";
-import { InvestmentDataContext } from "@/app/Data/INVESTMENTDATA";
+import {  View, StyleSheet, Pressable } from "react-native";
+
 
 import Entypo from "@expo/vector-icons/Entypo";
 import { Colors } from "@/app/constants/Colors";

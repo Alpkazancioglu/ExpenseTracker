@@ -1,13 +1,9 @@
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { useEffect } from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import Feather from "@expo/vector-icons/Feather";
-import Fontisto from "@expo/vector-icons/Fontisto";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import Octicons from "@expo/vector-icons/Octicons";
 import { Colors } from "@/app/constants/Colors";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useContext, useState } from "react";
 
@@ -29,9 +25,8 @@ const categoryLogos = [
 ];
 
 const localization = { gold: "Altin", dollar: "Dolar", tl: "Turk Lirasi" };
-const exchangeRates = { gold: 3500, dollar: 35, tl: 1 };
 
-const InvesmentBox = ({ type, count, date, buyedAmount, id }: InvestmentData) => {
+const InvesmentBox = ({ type, count, date, buyedAmount, id, transcation }: InvestmentData) => {
   const AmountText = buyedAmount.toString() + "TL";
   const investmentDataCtx = useContext(InvestmentDataContext);
   const logo = categoryLogos.find((item) => item.type === type)?.logo;
@@ -75,7 +70,12 @@ const InvesmentBox = ({ type, count, date, buyedAmount, id }: InvestmentData) =>
           <Text style={styles.categoryText}>{count} Adet</Text>
         </View>
         <View style={styles.amountAndDateContainer}>
-          <Text style={styles.amountTextPlus}>{AmountText}</Text>
+          {transcation === "sale" ? (
+            <Text style={styles.amountTextPlus}>+{AmountText}</Text>
+          ) : (
+            <Text style={styles.amountTextMinus}>-{AmountText}</Text>
+          )}
+
           <Text style={styles.dateText}>{date}</Text>
         </View>
       </Pressable>

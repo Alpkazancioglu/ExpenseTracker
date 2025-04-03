@@ -1,8 +1,8 @@
-import { Alert, KeyboardAvoidingView } from "react-native";
+import { Alert } from "react-native";
 import { useState, useContext } from "react";
 import { Colors } from "@/app/constants/Colors";
 import { Text, View, StyleSheet, Modal, TextInput, StatusBar, Pressable } from "react-native";
-import { SelectList } from "react-native-dropdown-select-list";
+
 
 import BackButton from "../MainScreen/BackButton";
 import { InvestmentData, InvestmentDataContext } from "@/app/Data/INVESTMENTDATA";

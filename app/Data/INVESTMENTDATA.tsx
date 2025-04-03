@@ -7,6 +7,7 @@ export interface InvestmentData {
   buyedAmount: number;
   id: string;
   date: string;
+  transcation: "purchase" | "sale";
 }
 
 interface InvestmentContextType {
@@ -17,6 +18,7 @@ interface InvestmentContextType {
   addInvestment: (data: InvestmentData) => void;
   deleteInvestment: (id: string) => void;
   getTotalAmount: () => number;
+  loadExpensesFromFile: (data: InvestmentData[]) => void;
 }
 
 export const InvestmentDataContext = createContext<InvestmentContextType>({
@@ -27,14 +29,43 @@ export const InvestmentDataContext = createContext<InvestmentContextType>({
   addInvestment: () => {},
   deleteInvestment: () => {},
   getTotalAmount: () => 0,
+  loadExpensesFromFile: () => {},
 });
 
 export default function InvestmentDataContextProvider({ children }: { children: React.ReactNode }) {
   const [investments, setInvestment] = useState<InvestmentData[]>([
-    { date: "08-03-2025", id: "1", type: "gold", count: 1, buyedAmount: 3000 },
-    { date: "08-03-2025", id: "2", type: "dollar", count: 3, buyedAmount: 90 },
-    { date: "08-03-2025", id: "3", type: "gold", count: 2, buyedAmount: 6000 },
-    { date: "08-03-2025", id: "4", type: "tl", count: 1000, buyedAmount: 1000 },
+    {
+      date: "08-03-2025",
+      id: "1",
+      type: "gold",
+      count: 1,
+      buyedAmount: 3000,
+      transcation: "purchase",
+    },
+    {
+      date: "08-03-2025",
+      id: "2",
+      type: "dollar",
+      count: 3,
+      buyedAmount: 90,
+      transcation: "purchase",
+    },
+    {
+      date: "08-03-2025",
+      id: "3",
+      type: "gold",
+      count: 2,
+      buyedAmount: 6000,
+      transcation: "purchase",
+    },
+    {
+      date: "08-03-2025",
+      id: "4",
+      type: "tl",
+      count: 1000,
+      buyedAmount: 1000,
+      transcation: "purchase",
+    },
   ]);
 
   const [exchangeRates, m_setExchangeRates] = useState({ gold: 3400, dollar: 36 });
@@ -52,7 +83,7 @@ export default function InvestmentDataContextProvider({ children }: { children: 
 
   function addInvestment(data: InvestmentData) {
     data.id = nanoid();
-    setInvestment((i) => [data,...i]);
+    setInvestment((i) => [data, ...i]);
   }
   function deleteInvestment(id: string) {
     const filteredArray = investments.filter((data) => data.id !== id);
@@ -60,21 +91,31 @@ export default function InvestmentDataContextProvider({ children }: { children: 
   }
   function getTotalAmount() {
     const rates = { gold: exchangeRates.gold, dollar: exchangeRates.dollar, tl: 1 };
-    console.log(rates);
 
-    return investments.reduce((total, data) => total + data.count * rates[data.type], 0);
+    return investments.reduce(
+      (total, data) =>
+        data.transcation === "purchase"
+          ? total + data.count * rates[data.type]
+          : total - data.count * rates[data.type],
+      0
+    );
+  }
+
+  function loadExpensesFromFile(data: InvestmentData[]) {
+    setInvestment(data);
   }
 
   function getTypeCountAndAmount(type: "gold" | "dollar" | "tl") {
     const goldExchange = exchangeRates.gold;
     const dollarExchange = exchangeRates.dollar;
-    console.log("is rendered");
 
     const filteredArray = investments.filter((value) => value.type === type);
 
     var count = 0;
     var amount = 0;
-    filteredArray.forEach((value) => (count += value.count));
+    filteredArray.forEach(
+      (value) => (count += value.count * (value.transcation === "purchase" ? 1 : -1))
+    );
     if (type === "gold") {
       amount += count * goldExchange;
     } else if (type === "dollar") {
@@ -94,6 +135,7 @@ export default function InvestmentDataContextProvider({ children }: { children: 
     addInvestment: addInvestment,
     deleteInvestment: deleteInvestment,
     getTotalAmount: getTotalAmount,
+    loadExpensesFromFile: loadExpensesFromFile,
   };
 
   return <InvestmentDataContext.Provider value={value}>{children}</InvestmentDataContext.Provider>;

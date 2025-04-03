@@ -12,6 +12,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useContext, useState } from "react";
 import { ExpenseDataContext } from "@/app/Data/EXPENSEDATA";
+import { formatToMoney } from "@/app/utils";
 
 interface ExpenseBoxProps {
   category: string;
@@ -112,7 +113,7 @@ const ExpenseBox = ({ category, name, amount, isExpense, date, style, id }: Expe
         </View>
         <View style={styles.amountAndDateContainer}>
           <Text style={isExpense ? styles.amountTextMinus : styles.amountTextPlus}>
-            {AmountText}
+            {formatToMoney(parseFloat(AmountText))}
           </Text>
           <Text style={styles.dateText}>{date}</Text>
         </View>
